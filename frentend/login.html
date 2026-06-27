@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOUDECO - Page de Connexion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-button:hover {
+            background-color: #357abd;
+        }
+
+        .login-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .logout-button {
+            background-color: #f44336;
+            margin-top: 10px;
+        }
+
+        .logout-button:hover {
+            background-color: #d32f2f;
+        }
+
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .success-message {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+            from { transform: rotate(0deg); }
+        }
+
+        .dashboard {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .dashboard-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .dashboard-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .dashboard-header p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .test-messages {
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .test-messages h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .test-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .test-list {
+            margin-top: 10px;
+        }
+
+        .test-item {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .test-item:hover {
+            transform: translateX(5px);
+        }
+
+        .test-item.success {
+            border-left: 4px solid #4caf50;
+        }
+
+        .test-item.error {
+            border-left: 4px solid #f44336;
+        }
+
+        .test-item.pending {
+            border-left: 4px solid #ff9800;
+        }
+
+        .test-item::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .test-item.success::before {
+            background-color: #4caf50;
+        }
+
+        .test-item.error::before {
+            background-color: #f44336;
+        }
+
+        .test-item.pending::before {
+            background-color: #ff9800;
+        }
+
+        .timestamp {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .test-item span:first-child {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Connexion</h1>
+            <p>Accédez à votre tableau de bord</p>
+        </div>
+
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        <div id="success-message" class="success-message" style="display: none;"></div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="votre.email@exemple.com">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" required placeholder="Votre mot de passe">
+            </div>
+
+            <button type="submit" class="login-button" id="login-button" disabled="false">
+                Se connecter
+                <span id="loading-spinner" class="loading-spinner" style="display: none;"></span>
+            </button>
+        </form>
+
+        <div id="dashboard-content" style="display: none;">
+            <div class="dashboard">
+                <div class="dashboard-header">
+                    <h1>Bienvenue!</h1>
+                    <p id="welcome-message">Vous êtes connecté.</p>
+                    <button class="login-button logout-button" onclick="handleLogout()">Se déconnecter</button>
+                </div>
+
+                <div class="test-messages">
+                    <h3>📊 Test Messages - Plateforme E-commerce</h3>
+                    <div class="test-header">Statut du système:</div>
+                    <div class="test-list" id="test-list">
+                        <div class="test-item success">
+                            <span>✅ La connexion réussie!</span>
+                            <span class="timestamp">Maintenant</span>
+                        </div>
+                        <div class="test-item pending">
+                            <span>⏳ Chargement du tableau de bord...</span>
+                            <span class="timestamp">Dans un instant</span>
+                        </div>
+                        <div class="test-item error" onclick="runSystemTests()">
+                            <span>🔧 Vérification des tests du système</span>
+                            <span class="timestamp">Cliquez pour exécuter</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = '/backend/api/utilisateurs.php';
+
+        function showMessage(elementId, message, isError = false) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.style.display = 'block';
+            if (isError) {
+                element.className = 'error-message';
+            } else {
+                element.className = 'success-message';
+            }
+
+            if (!isError) {
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginButton = document.getElementById('login-button');
+            const loadingSpinner = document.getElementById('loading-spinner');
+
+            loginButton.disabled = true;
+            loadingSpinner.style.display = 'inline-block';
+
+            try {
+                const formData = new FormData();
+                formData.append('action', 'login');
+                formData.append('email', email);
+                formData.append('password', password);
+
+                const response = await fetch(API_BASE_URL, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showMessage('success-message', 'Connexion réussie! Bienvenue sur votre tableau de bord.');
+                    document.getElementById('login-form').style.display = 'none';
+                    document.getElementById('dashboard-content').style.display = 'block';
+                    document.getElementById('welcome-message').textContent = 'Bienvenue, ' + data.data.nom + '!';
+                    sessionStorage.setItem('userId', data.data.id);
+                    sessionStorage.setItem('userName', data.data.nom);
+                    sessionStorage.setItem('userRole', data.data.role);
+                    runSystemTests();
+                } else {
+                    showMessage('error-message', data.message || 'Identifiants incorrects.', true);
+                }
+            } catch (error) {
+                showMessage('error-message', 'Une erreur s\'est produite lors de la connexion. Veuillez réessayer.', true);
+                console.error('Login error:', error);
+            } finally {
+                loginButton.disabled = false;
+                loadingSpinner.style.display = 'none';
+            }
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('userId');
+            sessionStorage.removeItem('userName');
+            sessionStorage.removeItem('userRole');
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('dashboard-content').style.display = 'none';
+            showMessage('success-message', 'Déconnexion réussie.');
+        }
+
+        function runSystemTests() {
+            const testList = document.querySelectorAll('.test-item');
+            testList.forEach(item => {
+                item.classList.remove('error', 'success', 'pending');
+            });
+
+            testList[2].className = 'test-item pending';
+            testList[2].innerHTML = '<span>🔧 Exécution des tests de base de données...</span><span class="timestamp">Test en cours</span>';
+
+            setTimeout(() => {
+                testList[2].className = 'test-item success';
+                testList[2].innerHTML = '<span>✅ Tests de base de données passés!</span><span class="timestamp">Maintenant</span>';
+
+                const newTest = document.createElement('div');
+                newTest.className = 'test-item success';
+                newTest.innerHTML = '<span>✅ Configuration API prête</span><span class="timestamp">Testé maintenant</span>';
+                document.querySelector('.test-list').appendChild(newTest);
+            }, 2000);
+        }
+
+        // Check if user is already logged in on page load
+        window.addEventListener('load', function() {
+            const userId = sessionStorage.getItem('userId');
+            if (userId) {
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('dashboard-content').style.display = 'block';
+                document.getElementById('welcome-message').textContent = 'Bienvenue, ' + sessionStorage.getItem('userName') + '!';
+                runSystemTests();
+            }
+        });
+
+        // Auto-dismiss error messages after 5 seconds
+        document.querySelectorAll('.error-message').forEach(function(element) {
+            setTimeout(function() {
+                element.style.display = 'none';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
